@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Recycle } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { AIChatButton } from "@/components/AIChatButton";
 // LiquidEther is rendered globally via the app layout
 
 const Auth = () => {
@@ -111,14 +110,13 @@ const Auth = () => {
       {/* Theme Toggle and AI Chat Button */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <ThemeToggle />
-        <AIChatButton />
       </div>
       
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-12 space-y-4">
           <div className="inline-flex h-12 w-12 rounded-lg bg-primary items-center justify-center">
-            <Recycle className="h-6 w-6 text-background" />
+            <img src="https://storage.googleapis.com/gpt-engineer-file-uploads/XkL04eRZzUTW6aT2tLMIZD0HlTS2/uploads/1762161615259-d8a4d64a-a82e-41f6-8fec-9a16fe9fe5c1-1_all_2645.jpg" alt="Terra Vitta icon" className="h-6 w-6 rounded-md object-cover" />
           </div>
           <h1 className="text-4xl font-bold font-playfair">EcoMart</h1>
           <p className="text-foreground/60">Building a sustainable future</p>

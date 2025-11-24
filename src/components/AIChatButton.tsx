@@ -1,56 +1,50 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Chatbot } from "./Chatbot";
 
 export const AIChatButton = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      // focus input inside Chatbot when opened (Chatbot handles own focus) - small timeout for animation
+      setTimeout(() => inputRef.current?.focus(), 360);
+    }
+  }, [isOpen]);
 
   return (
     <>
-      <div className="ai-chat-button-wrapper">
-        <button 
-          className="ai-chat-btn"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <svg 
-            className="ai-chat-btn-svg" 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-            />
-          </svg>
-
-          <div className="ai-chat-txt-wrapper">
-            <div className="ai-chat-txt-1">
-              <span className="ai-chat-btn-letter">A</span>
-              <span className="ai-chat-btn-letter">s</span>
-              <span className="ai-chat-btn-letter">k</span>
-              <span className="ai-chat-btn-letter"> </span>
-              <span className="ai-chat-btn-letter">A</span>
-              <span className="ai-chat-btn-letter">I</span>
+      {/* Collapsed bottom-center "Ask AI" bar */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-40 w-full max-w-3xl px-4 pointer-events-none">
+        <div className="pointer-events-auto">
+          {!isOpen ? (
+            <div className="mx-auto bg-background/40 glass-panel backdrop-blur-lg rounded-full px-4 py-3 shadow-xl flex items-center gap-3 transition-all duration-300 hover:scale-[1.01] cursor-pointer"
+                 onClick={() => setIsOpen(true)}
+                 role="button"
+                 aria-label="Open AI chat">
+              <div className="h-8 w-8 rounded-lg bg-primary/90 flex items-center justify-center text-background font-bold">AI</div>
+              <div className="flex-1 text-sm text-foreground/70">Ask AI</div>
+              <div className="text-xs text-foreground/50">Chat</div>
             </div>
-            <div className="ai-chat-txt-2">
-              <span className="ai-chat-btn-letter">C</span>
-              <span className="ai-chat-btn-letter">h</span>
-              <span className="ai-chat-btn-letter">a</span>
-              <span className="ai-chat-btn-letter">t</span>
-              <span className="ai-chat-btn-letter">t</span>
-              <span className="ai-chat-btn-letter">i</span>
-              <span className="ai-chat-btn-letter">n</span>
-              <span className="ai-chat-btn-letter">g</span>
-            </div>
-          </div>
-        </button>
-      </div>
+          ) : (
+            <div className="mx-auto w-full bg-background/40 backdrop-blur-xl glass-heavy rounded-3xl shadow-2xl transition-all duration-500 transform scale-100">
+              <div className="flex items-center justify-between p-3 border-b border-primary/10">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center text-white font-semibold">AI</div>
+                  <div className="text-sm font-semibold">Terra Vitta AI</div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button onClick={() => setIsOpen(false)} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Close</button>
+                </div>
+              </div>
 
-      {isOpen && (
-        <div className="fixed top-20 right-4 z-40 w-96 h-[600px] max-h-[calc(100vh-6rem)] shadow-2xl rounded-2xl overflow-hidden">
-          <Chatbot />
+              <div className="h-[60vh] max-h-[calc(100vh-8rem)] overflow-hidden rounded-b-3xl">
+                <Chatbot />
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </>
   );
 };

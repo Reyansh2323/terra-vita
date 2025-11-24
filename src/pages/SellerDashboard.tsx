@@ -25,7 +25,7 @@ const SellerDashboard = () => {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-                  <Recycle className="h-6 w-6 text-background" />
+                  <img src="https://storage.googleapis.com/gpt-engineer-file-uploads/XkL04eRZzUTW6aT2tLMIZD0HlTS2/uploads/1762161615259-d8a4d64a-a82e-41f6-8fec-9a16fe9fe5c1-1_all_2645.jpg" alt="Terra Vitta icon" className="h-6 w-6 rounded-md object-cover" />
                 </div>
                 <h1 className="text-3xl font-bold font-playfair">Seller Dashboard</h1>
               </div>

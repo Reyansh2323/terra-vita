@@ -1,4 +1,6 @@
 import { useNavigate } from "react-router-dom";
+// TextPressure component - install with: npx shadcn@latest add @react-bits/TextPressure-TS-CSS
+import TextPressure from "@react-bits/TextPressure-TS-CSS";
 import { Search, Leaf, ShoppingBag, Users, Recycle, Sun, Moon, Heart, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -91,11 +93,10 @@ const Landing = () => {
                 <span className="text-sm font-semibold text-primary">Sustainable Marketplace</span>
               </div>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair leading-tight">
-                Shop with
-                <br />
-                <span className="text-primary">Purpose</span>
-              </h1>
+              {/* TextPressure from @react-bits/TextPressure-TS-CSS */}
+              <div className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair leading-tight">
+                <TextPressure text="Shop with Purpose" className="w-full text-center mx-auto" />
+              </div>
               
               <p className="text-xl text-foreground/70 max-w-2xl mx-auto leading-relaxed">
                 Every purchase supports sustainability. Discover eco-friendly products and earn EcoPoints for making conscious choices.

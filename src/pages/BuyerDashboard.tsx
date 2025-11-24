@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Recycle, Loader2, Leaf, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { AIChatButton } from "@/components/AIChatButton";
 import { CartDrawer } from "@/components/CartDrawer";
 import { useCart } from "@/hooks/useCart";
 // LiquidEther is rendered globally via the app layout
@@ -154,7 +153,6 @@ const BuyerDashboard = () => {
             
             <div className="flex items-center gap-2 z-50">
               <ThemeToggle />
-              <AIChatButton />
               <CartDrawer />
               <Button 
                 variant="ghost" 
