@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout";
 import LiquidEtherBackground from './components/LiquidEtherBackground';
+import InfiniteMenu from '@/components/InfiniteMenu';
 import NotFound from "./pages/NotFound";
 import "./App.css";
 
@@ -43,6 +44,7 @@ const App = () => (
         </Routes>
       </BrowserRouter>
         </div>
+        <InfiniteMenu />
       </CartProvider>
       </ThemeProvider>
     </TooltipProvider>
