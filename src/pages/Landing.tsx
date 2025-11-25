@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { Search, Leaf, ShoppingBag, Users, Recycle, Sun, Moon, Heart, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AccountMenu from '@/components/AccountMenu';
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import { EdgeDoodles } from "@/components/EdgeDoodles";
+import SplitTitle from "@/components/SplitTitle";
 // LiquidEther is rendered globally via the app layout
 
 const Landing = () => {
@@ -51,7 +53,7 @@ const Landing = () => {
         <header className="border-b border-primary/10 backdrop-blur-sm">
           <div className="container py-6 flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <img src="https://storage.googleapis.com/gpt-engineer-file-uploads/XkL04eRZzUTW6aT2tLMIZD0HlTS2/uploads/1762161615259-d8a4d64a-a82e-41f6-8fec-9a16fe9fe5c1-1_all_2645.jpg" alt="Terra Vitta icon" className="h-8 w-8 rounded-full" />
+                <img src="/placeholder.svg" alt="Terra Vitta icon" className="h-8 w-8 rounded-full" />
                 <span className="text-2xl font-bold font-playfair text-primary">
                   EcoMart
                 </span>
@@ -65,19 +67,7 @@ const Landing = () => {
               >
                 {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </Button>
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate("/auth")}
-                className="hover:bg-primary/10 transition-colors"
-              >
-                Sign In
-              </Button>
-              <Button 
-                className="btn-glow bg-primary hover:bg-primary/90 text-black font-semibold" 
-                onClick={() => navigate("/auth")}
-              >
-                Get Started
-              </Button>
+              <AccountMenu />
             </div>
           </div>
         </header>
@@ -91,11 +81,13 @@ const Landing = () => {
                 <span className="text-sm font-semibold text-primary">Sustainable Marketplace</span>
               </div>
               
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold font-playfair leading-tight">
-                Shop with
-                <br />
-                <span className="text-primary">Purpose</span>
-              </h1>
+              <div className="pop-in">
+              <SplitTitle
+                text="Shop with Purpose"
+                className="text-5xl md:text-6xl lg:text-7xl"
+                highlight="Purpose"
+              />
+              </div>
               
               <p className="text-xl text-foreground/70 max-w-2xl mx-auto leading-relaxed">
                 Every purchase supports sustainability. Discover eco-friendly products and earn EcoPoints for making conscious choices.
@@ -103,7 +95,7 @@ const Landing = () => {
             </div>
 
             {/* Impact Counters */}
-            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
+              <div className="grid grid-cols-2 gap-4 max-w-md mx-auto pop-in">
               <div className="glass-panel rounded-lg p-6 text-center">
                 <div className="text-3xl font-bold text-primary mb-2">{swapCount.toLocaleString()}</div>
                 <div className="text-sm text-foreground/60">Swaps Active</div>
@@ -131,7 +123,7 @@ const Landing = () => {
             <div className="flex flex-wrap justify-center gap-4">
               <Button 
                 size="lg" 
-                className="btn-glow bg-primary hover:bg-primary/90 text-black font-semibold px-8 h-12"
+                className="btn-glow bg-primary hover:bg-primary/90 text-black font-semibold px-8 h-12 pop-in"
                 onClick={() => navigate("/buyer")}
               >
                 <Recycle className="mr-2 h-5 w-5" />
@@ -140,7 +132,7 @@ const Landing = () => {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="glass-button px-8 h-12 font-semibold"
+                className="glass-button px-8 h-12 font-semibold pop-in"
                 onClick={() => navigate("/buyer")}
               >
                 <Users className="mr-2 h-5 w-5" />

@@ -86,7 +86,7 @@ export default function InfiniteMenu() {
           <button
             aria-label={isOpen ? 'Close product explorer' : 'Open product explorer'}
             onClick={() => setIsOpen(v => !v)}
-            className="rounded-full bg-white/5 hover:bg-white/10 text-white px-3 py-1 text-sm border border-white/5"
+            className="rounded-full bg-white/5 hover:bg-white/10 dark:text-white text-foreground px-3 py-1 text-sm border border-white/5"
           >
             {isOpen ? 'Hide' : 'Explore'} Products
           </button>

@@ -13,11 +13,11 @@ serve(async (req) => {
 
   try {
     const { message, matchedProducts } = await req.json();
-    // Hardcoded API key for prototype testing
-    const GEMINI_API_KEY = 'AIzaSyDV6AX09oy3QJoXhYExYATI9tGW2Jlt7IQ';
+    // Read Gemini API key from environment variables (set this securely in Supabase secrets)
+    const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY');
 
     if (!GEMINI_API_KEY) {
-      console.error('GEMINI_API_KEY not configured');
+      console.error('GEMINI_API_KEY not configured in environment');
       return new Response(
         JSON.stringify({ success: false, error: 'API key not configured' }),
         { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

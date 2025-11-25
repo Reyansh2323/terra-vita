@@ -7,6 +7,8 @@ import { Recycle, Loader2, Leaf, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AIChatButton } from "@/components/AIChatButton";
+import AccountMenu from '@/components/AccountMenu';
+import SplitTitle from "@/components/SplitTitle";
 import { CartDrawer } from "@/components/CartDrawer";
 import { useCart } from "@/hooks/useCart";
 // LiquidEther is rendered globally via the app layout
@@ -144,7 +146,7 @@ const BuyerDashboard = () => {
           <div className="container py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
-                  <img src="https://storage.googleapis.com/gpt-engineer-file-uploads/XkL04eRZzUTW6aT2tLMIZD0HlTS2/uploads/1762161615259-d8a4d64a-a82e-41f6-8fec-9a16fe9fe5c1-1_all_2645.jpg" alt="Terra Vitta icon" className="h-5 w-5 rounded-md" />
+                  <img src="/placeholder.svg" alt="Terra Vitta icon" className="h-5 w-5 rounded-md" />
                 </div>
               <div>
                 <h1 className="text-xl font-bold font-playfair text-foreground">EcoMart</h1>
@@ -156,14 +158,7 @@ const BuyerDashboard = () => {
               <ThemeToggle />
               <AIChatButton />
               <CartDrawer />
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleSignOut} 
-                className="text-sm font-medium hover:bg-foreground/10"
-              >
-                Sign Out
-              </Button>
+              <AccountMenu />
             </div>
           </div>
         </header>
@@ -177,11 +172,11 @@ const BuyerDashboard = () => {
                 <span>Sustainable Marketplace</span>
               </div>
               
-              <h2 className="text-5xl md:text-6xl font-bold leading-tight font-playfair">
-                Shop with
-                <br />
-                <span className="text-primary">Purpose</span>
-              </h2>
+              <SplitTitle
+                text="Shop with Purpose"
+                className="text-5xl md:text-6xl"
+                highlight="Purpose"
+              />
               
               <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
                 Every purchase supports sustainability. Discover eco-friendly products and earn EcoPoints.
@@ -190,7 +185,7 @@ const BuyerDashboard = () => {
               <Button 
                 onClick={scrollToCatalog}
                 size="lg"
-                className="text-base px-8 h-12 rounded-lg font-semibold bg-primary text-background hover:bg-primary/90"
+                className="text-base px-8 h-12 rounded-lg font-semibold bg-primary text-background hover:bg-primary/90 pop-in"
               >
                 Explore Products
                 <ChevronDown className="ml-2 h-4 w-4" />
@@ -233,7 +228,7 @@ const BuyerDashboard = () => {
                       filteredProducts.map((product) => (
                         <div
                           key={product.id}
-                          className="border border-primary/10 rounded-lg overflow-hidden bg-background/40 backdrop-blur-sm hover:border-primary/20 hover:bg-background/60 transition-all duration-200"
+                          className="border border-primary/10 rounded-lg overflow-hidden bg-background/40 backdrop-blur-sm hover:border-primary/20 hover:bg-background/60 transition-all duration-200 pop-in"
                         >
                           <div className="aspect-square overflow-hidden bg-foreground/5">
                             <img 

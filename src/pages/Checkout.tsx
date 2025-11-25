@@ -5,16 +5,66 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { useState } from 'react';
 
 export default function Checkout() {
   const { items, total, itemCount, clearCart } = useCart();
   const [selectedCard, setSelectedCard] = useState('test-4242');
   const navigate = useNavigate();
 
-  const handlePlaceOrder = () => {
-    // Simplified checkout: clear cart and show success toast
-    clearCart();
-    navigate('/');
+  const [orderModalOpen, setOrderModalOpen] = useState(false);
+  const [orderInfo, setOrderInfo] = useState<any | null>(null);
+
+  const handlePlaceOrder = async () => {
+    // Assume the user is authenticated, get session
+    const { data: sessionData } = await supabase.auth.getSession();
+    const userId = sessionData?.session?.user?.id;
+
+    if (!userId) {
+      // Redirect to auth
+      navigate('/auth');
+      return;
+    }
+
+    if (items.length === 0) {
+      // nothing to order
+      return;
+    }
+
+    // Generate a random order number and ETA (1-3 days)
+    const orderNumber = Math.floor(100000 + Math.random() * 900000).toString();
+    const etaDays = Math.floor(1 + Math.random() * 3);
+    const etaDate = new Date();
+    etaDate.setDate(etaDate.getDate() + etaDays);
+
+    try {
+      // Insert one row per cart item into orders table
+      const ordersToInsert = items.map(item => ({
+        buyer_id: userId,
+        seller_id: item.seller_id || null,
+        product_id: item.id,
+        quantity: item.quantity || 1,
+        price: item.price || 0,
+        status: 'pending',
+        tracking_notes: `Order No: ${orderNumber} - ETA: ${etaDays} days`,
+      }));
+
+      const { data: inserted, error } = await supabase.from('orders').insert(ordersToInsert).select();
+
+      if (error) {
+        console.error('Failed to insert orders', error);
+        return;
+      }
+
+      // On success, clear cart, show confirmation modal
+      setOrderInfo({ orderNumber, etaDays, etaDate, inserted });
+      setOrderModalOpen(true);
+      clearCart();
+    } catch (err) {
+      console.error('Checkout error', err);
+    }
   };
 
   return (
@@ -74,6 +124,25 @@ export default function Checkout() {
           </Card>
         </div>
       </div>
+      {orderInfo && (
+        <Dialog open={orderModalOpen} onOpenChange={setOrderModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Order Placed</DialogTitle>
+              <DialogDescription>Your order has been placed and is being processed.</DialogDescription>
+            </DialogHeader>
+            <div className="py-2">
+              <p className="font-semibold">Order No: {orderInfo.orderNumber}</p>
+              <p>Estimated delivery: {orderInfo.etaDays} day(s) (around {orderInfo.etaDate.toDateString()})</p>
+              <p className="text-sm text-foreground/60 mt-2">We saved the order in your account. You can view previous orders in your Account.</p>
+            </div>
+            <DialogFooter>
+              <Button onClick={() => { setOrderModalOpen(false); navigate('/orders'); }}>View Orders</Button>
+              <Button variant="outline" onClick={() => setOrderModalOpen(false)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

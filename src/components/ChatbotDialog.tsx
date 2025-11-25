@@ -12,9 +12,9 @@ export const ChatbotDialog = () => {
         className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 flex items-center justify-center transition-spring hover:scale-110 shadow-2xl glass-panel"
       >
         {isOpen ? (
-          <X className="w-6 h-6 text-white" />
+          <X className="w-6 h-6 dark:text-white text-background" />
         ) : (
-          <MessageCircle className="w-6 h-6 text-white" />
+          <MessageCircle className="w-6 h-6 dark:text-white text-background" />
         )}
       </button>
 

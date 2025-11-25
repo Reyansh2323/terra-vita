@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Recycle } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { AIChatButton } from "@/components/AIChatButton";
+import AccountMenu from '@/components/AccountMenu';
 // LiquidEther is rendered globally via the app layout
 
 const Auth = () => {
@@ -112,6 +113,7 @@ const Auth = () => {
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <ThemeToggle />
         <AIChatButton />
+        <AccountMenu />
       </div>
       
       <div className="w-full max-w-md">

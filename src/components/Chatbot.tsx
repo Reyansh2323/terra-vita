@@ -32,35 +32,42 @@ export const Chatbot = () => {
     setLoading(true);
     
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`
-          },
-          body: JSON.stringify({ 
-            message: messageText,
-            matchedProducts: matchedProducts || undefined
-          })
-        }
-      );
+      // Use the Supabase Functions SDK to invoke the 'chat' function.
+      // Add retry logic (up to 3 attempts with exponential backoff)
+      let attempt = 0;
+      let result: any = null;
+      const maxAttempts = 3;
+      const payload = { message: messageText, matchedProducts: matchedProducts || undefined };
 
-      if (!response.ok) {
-        throw new Error('Failed to get response');
+      while (attempt < maxAttempts) {
+        try {
+          const { data, error } = await supabase.functions.invoke('chat', {
+            body: JSON.stringify(payload),
+          });
+
+          if (error) throw error;
+          result = data;
+          break; // success
+        } catch (err) {
+          attempt += 1;
+          const delay = Math.pow(2, attempt) * 150;
+          console.warn(`Chat attempt ${attempt} failed. Retrying in ${delay}ms`, err);
+          await new Promise(res => setTimeout(res, delay));
+        }
       }
 
-      const data = await response.json();
+      if (!result) {
+        throw new Error('Failed to get response from chat function after retries');
+      }
 
-      if (data?.success) {
+      if (result?.success) {
         setMessages(prev => [...prev, {
-          text: data.reply,
+          text: result.reply,
           sender: 'bot',
           products: matchedProducts
         }]);
       } else {
-        throw new Error('Failed to get response');
+        throw new Error(result?.error || 'Failed to get response');
       }
     } catch (error) {
       console.error('Chat error:', error);
@@ -97,21 +104,11 @@ export const Chatbot = () => {
         const base64Image = reader.result as string;
         
         // Call OCR edge function
-        const response = await fetch(
-          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/scan-receipt`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`
-            },
-            body: JSON.stringify({ imageBase64: base64Image })
-          }
-        );
-
-        const result = await response.json();
+        const { data: result, error } = await supabase.functions.invoke('scan-receipt', {
+          body: JSON.stringify({ imageBase64: base64Image })
+        });
         
-        if (result.success) {
+        if (!error && result?.success) {
           const scanMsg: Message = {
             text: `I scanned this receipt - please help me find matching products`,
             sender: 'user'
@@ -130,7 +127,7 @@ export const Chatbot = () => {
             }]);
           }
         } else {
-          toast.error(result.error || 'Failed to scan receipt');
+          toast.error(result?.error || error?.message || 'Failed to scan receipt');
         }
         
         setScanning(false);
@@ -159,8 +156,8 @@ export const Chatbot = () => {
       {/* Header */}
       <div className="p-6 border-b glass-light backdrop-blur-xl">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg">
-            <Sparkles className="w-6 h-6 text-white" />
+            <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center shadow-lg">
+            <Sparkles className="w-6 h-6 text-primary" />
           </div>
           <div>
             <h3 className="font-bold text-lg bg-gradient-to-r from-emerald-600 to-green-600 dark:from-emerald-400 dark:to-green-400 bg-clip-text text-transparent">Terra Vitta AI</h3>
@@ -190,7 +187,7 @@ export const Chatbot = () => {
             <div
               className={`max-w-[85%] rounded-2xl px-5 py-3 shadow-sm ${
                 msg.sender === 'user'
-                  ? 'bg-gradient-to-br from-emerald-500 to-green-600 text-white'
+                  ? 'bg-gradient-to-br from-emerald-500 to-green-600 dark:text-white text-background'
                   : 'glass-panel'
               }`}
             >

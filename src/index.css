@@ -151,6 +151,14 @@ All colors MUST be HSL.
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
   }
 
+  /* Improve glass-heavy for light theme */
+  .light .glass-heavy {
+    background: rgba(255,255,255,0.88);
+    color: hsl(var(--foreground));
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+  }
+
   .light .glass-button {
     background: rgba(255,255,255,0.9);
     border: 1px solid rgba(15, 23, 42, 0.06);
@@ -380,6 +388,16 @@ All colors MUST be HSL.
   .glass-button:active {
     transform: translateY(0px);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+
+  /* Button glow utility */
+  .btn-glow {
+    box-shadow: 0 6px 20px rgba(80, 180, 152, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms;
+  }
+  .btn-glow:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 18px 40px rgba(80, 180, 152, 0.22), 0 6px 16px rgba(0, 0, 0, 0.06);
+  }
   }
   
   /* ========================================
@@ -738,6 +756,63 @@ All colors MUST be HSL.
   .glass-refraction {
     position: relative;
   }
+
+  /* ========================================
+     SPLIT TITLE ANIMATION
+     ======================================== */
+  @keyframes split-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .split-letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: split-fade-up 420ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .split-letter {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Simple subtle pop-in for cards */
+  @keyframes pop-in {
+    from { opacity: 0; transform: translateY(6px) scale(0.995); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .pop-in {
+    animation: pop-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  /* AI chat floating button */
+  .ai-chat-float {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(var(--blur-sm));
+    border: 1px solid rgba(80,180,152,0.08);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .light .ai-chat-float {
+    background: rgba(255,255,255,0.78);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-chat-float { transition: none; }
+  }
+
+
 
 /* ========================================
    MINIMAL ANIMATIONS FOR POLISH
