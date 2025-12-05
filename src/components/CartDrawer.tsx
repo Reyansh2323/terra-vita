@@ -1,9 +1,10 @@
 import { ShoppingCart, Minus, Plus, Trash2, CreditCard, X } from 'lucide-react';
 import { Button } from './ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from './ui/sheet';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
 import { useCart } from '@/hooks/useCart';
+import { formatCurrency } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -59,7 +60,7 @@ export function CartDrawer() {
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold truncate mb-1">{item.title}</h3>
                     <p className="text-sm text-primary font-bold mb-2">
-                      د.إ {item.price.toFixed(2)}
+                      د.إ {formatCurrency(item.price)}
                     </p>
                     <div className="flex items-center gap-2">
                       <Button
@@ -105,21 +106,23 @@ export function CartDrawer() {
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
                 <span className="font-semibold">
-                  د.إ {total.toFixed(2)}
+                  د.إ {formatCurrency(total)}
                 </span>
               </div>
               <div className="flex justify-between text-lg font-bold">
                 <span>Total</span>
                 <span className="text-primary">
-                  د.إ {total.toFixed(2)}
+                  د.إ {formatCurrency(total)}
                 </span>
               </div>
             </div>
             
-            <Button onClick={handleCheckout} className="w-full" size="lg">
+            <SheetClose asChild>
+              <Button onClick={handleCheckout} className="w-full" size="lg">
               <CreditCard className="mr-2 h-5 w-5" />
               Proceed to Checkout
-            </Button>
+              </Button>
+            </SheetClose>
             
             <Button
               variant="outline"

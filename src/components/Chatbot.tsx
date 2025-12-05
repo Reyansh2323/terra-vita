@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Send, Loader2, Camera, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { formatCurrency } from '@/lib/utils';
 import { toast } from "sonner";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -197,7 +198,7 @@ export const Chatbot = () => {
                   {msg.products.map((product: any) => (
                     <div key={product.id} className="glass-light rounded-xl p-3 text-xs space-y-1">
                       <p className="font-bold text-base">{product.name}</p>
-                      <p className="text-muted-foreground">${product.price}</p>
+                      <p className="text-muted-foreground">د.إ {formatCurrency(product.price)}</p>
                     </div>
                   ))}
                 </div>

@@ -13,11 +13,13 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { useCart } from "@/hooks/useCart";
 // LiquidEther is rendered globally via the app layout
 
+import { normalizePrice, formatCurrency } from '@/lib/utils';
+
 const fallbackProducts = [
     {
     id: '1',
     name: 'Bamboo Toothbrush Set',
-    price: 299,
+    price: 2.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1585412459556-6b5e3b3d8f5a?w=500&h=500&fit=crop',
     tags: ['personal-care'],
@@ -26,7 +28,7 @@ const fallbackProducts = [
     {
     id: '2',
     name: 'Eco Water Bottle',
-    price: 1299,
+    price: 12.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1602143407151-7e36dd5f7746?w=500&h=500&fit=crop',
     tags: ['accessories'],
@@ -35,7 +37,7 @@ const fallbackProducts = [
     {
     id: '3',
     name: 'Organic Cotton T-Shirt',
-    price: 599,
+    price: 5.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=500&fit=crop',
     tags: ['clothing'],
@@ -44,7 +46,7 @@ const fallbackProducts = [
     {
     id: '4',
     name: 'Solar Phone Charger',
-    price: 1999,
+    price: 19.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?w=500&h=500&fit=crop',
     tags: ['tech'],
@@ -53,7 +55,7 @@ const fallbackProducts = [
     {
     id: '5',
     name: 'Compostable Phone Case',
-    price: 399,
+    price: 3.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1574531446910-a100fec00891?w=500&h=500&fit=crop',
     tags: ['tech'],
@@ -62,7 +64,7 @@ const fallbackProducts = [
     {
     id: '6',
     name: 'Reusable Lunch Container',
-    price: 499,
+    price: 4.99,
       currency: 'AED',
     image_url: 'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=500&h=500&fit=crop',
     tags: ['kitchen'],
@@ -92,7 +94,8 @@ const BuyerDashboard = () => {
           // Use fallback products
           setProducts(fallbackProducts);
         } else {
-          setProducts(data);
+          // normalize product prices coming from the DB
+          setProducts((data as any[]).map(p => ({ ...p, price: normalizePrice(p.price) })));
         }
       } catch (err) {
         console.error('Error fetching products:', err);
@@ -116,7 +119,7 @@ const BuyerDashboard = () => {
     addItem({
       id: product.id,
       title: product.name,
-      price: product.price,
+      price: normalizePrice(product.price),
       currency: product.currency,
       image: product.image_url,
     });
@@ -154,9 +157,9 @@ const BuyerDashboard = () => {
               </div>
             </div>
             
-            <div className="flex items-center gap-2 z-50">
+            <div className="flex items-center gap-2 z-50 relative">
               <ThemeToggle />
-              <AIChatButton />
+              <AIChatButton floating={false} />
               <CartDrawer />
               <AccountMenu />
             </div>
@@ -260,7 +263,7 @@ const BuyerDashboard = () => {
                             
                               <div className="flex items-center justify-between pt-2 border-t border-primary/10">
                               <span className="text-2xl font-bold text-foreground">
-                                د.إ {product.price.toFixed(2)}
+                                د.إ {formatCurrency(product.price)}
                               </span>
                               <Button 
                                 onClick={() => handleAddToCart(product)}

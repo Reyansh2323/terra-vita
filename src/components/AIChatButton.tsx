@@ -2,12 +2,16 @@ import { useState } from "react";
 import { Chatbot } from "./Chatbot";
 import { MessageSquare } from 'lucide-react';
 
-export const AIChatButton = () => {
+export const AIChatButton = ({ floating = true }: { floating?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50"> 
+      {floating ? (
+        <div className="fixed bottom-6 right-6 z-50"> 
+      ) : (
+        <div className="relative inline-block"> 
+      )}
         <button
           className="ai-chat-float glass-panel rounded-3xl p-3 flex items-center gap-3 shadow-lg hover:scale-105 active:scale-95 transition-transform"
           aria-label="Open AI Chat"
@@ -21,9 +25,15 @@ export const AIChatButton = () => {
       </div>
 
       {isOpen && (
-        <div className="fixed bottom-20 right-6 z-50 w-80 sm:w-96 h-[70vh] max-h-[calc(100vh-6rem)] shadow-2xl rounded-2xl overflow-hidden">
-          <Chatbot />
-        </div>
+        floating ? (
+          <div className="fixed bottom-20 right-6 z-50 w-80 sm:w-96 h-[70vh] max-h-[calc(100vh-6rem)] shadow-2xl rounded-2xl overflow-hidden">
+            <Chatbot />
+          </div>
+        ) : (
+          <div className="absolute top-12 right-0 z-50 w-80 sm:w-96 h-[70vh] max-h-[calc(100vh-6rem)] shadow-2xl rounded-2xl overflow-hidden">
+            <Chatbot />
+          </div>
+        )
       )}
     </>
   );

@@ -3,6 +3,7 @@ import { ArrowLeft, ShoppingCart, Award, Recycle, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useCart } from '@/hooks/useCart';
+import { normalizePrice, formatCurrency } from '@/lib/utils';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { CartDrawer } from '@/components/CartDrawer';
 import productsData from '@/data/products.json';
@@ -32,7 +33,7 @@ export default function ProductDetail() {
     addItem({
       id: product.id,
       title: product.title,
-      price: product.price,
+      price: normalizePrice(product.price),
       currency: product.currency,
       image: product.image,
     });
@@ -103,7 +104,7 @@ export default function ProductDetail() {
             <div className="border-t border-b border-primary/10 py-4">
               <div className="flex items-baseline gap-2">
                 <span className="text-4xl font-bold text-primary">
-                  د.إ {product.price.toFixed(2)}
+                  د.إ {formatCurrency(normalizePrice(product.price))}
                 </span>
                 <span className="text-foreground/60">AED</span>
               </div>

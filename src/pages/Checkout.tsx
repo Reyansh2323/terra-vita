@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { useState } from 'react';
+import { formatCurrency } from '@/lib/utils';
 
 export default function Checkout() {
   const { items, total, itemCount, clearCart } = useCart();
@@ -109,7 +109,7 @@ export default function Checkout() {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Items ({itemCount})</span>
-                <span className="font-semibold">د.إ {total.toFixed(2)}</span>
+                <span className="font-semibold">د.إ {formatCurrency(total)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Payment Method</span>

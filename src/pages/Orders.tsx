@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
+import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +49,7 @@ export default function Orders() {
                   <div className="text-sm text-foreground/60">Notes: {order.tracking_notes}</div>
                 </div>
                 <div className="text-right">
-                  <div className="font-semibold">د.إ {Number(order.price).toFixed(2)}</div>
+                  <div className="font-semibold">د.إ {formatCurrency(Number(order.price) || 0)}</div>
                   <div className="mt-2">
                     <Button size="sm" onClick={() => navigate(`/orders/${order.id}`)}>View</Button>
                   </div>

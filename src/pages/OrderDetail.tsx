@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
+import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 export default function OrderDetail() {
@@ -32,7 +33,7 @@ export default function OrderDetail() {
         <div className="space-y-2">
           <div>Status: {order.status}</div>
           <div>Notes: {order.tracking_notes}</div>
-          <div>Price: د.إ {Number(order.price).toFixed(2)}</div>
+          <div>Price: د.إ {formatCurrency(Number(order.price) || 0)}</div>
         </div>
       </Card>
     </div>

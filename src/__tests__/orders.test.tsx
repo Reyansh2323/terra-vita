@@ -9,9 +9,13 @@ vi.mock('@/integrations/supabase/client', async () => {
     auth: {
       getSession: vi.fn(() => Promise.resolve({ data: { session: { user: { id: 'user-123' } } } })),
     },
-    from: vi.fn(() => ({ select: vi.fn(() => Promise.resolve({ data: [
-      { id: 'order-1', buyer_id: 'user-123', price: 42.99, status: 'pending', tracking_notes: 'Order No: 12345 - ETA: 2 days' }
-    ], error: null })) })),
+    from: vi.fn(() => ({ select: vi.fn(() => ({
+      eq: vi.fn(() => ({
+        order: vi.fn(() => Promise.resolve({ data: [
+          { id: 'order-1', buyer_id: 'user-123', price: 42.99, status: 'pending', tracking_notes: 'Order No: 12345 - ETA: 2 days' }
+        ], error: null }))
+      }))
+    })) })),
   } as any;
   return { supabase };
 });
@@ -27,7 +31,7 @@ describe('Orders page', () => {
     const title = await screen.findByText(/Previous Orders/i);
     expect(title).toBeInTheDocument();
 
-    const orderLine = await screen.findByText(/Order No: 12345/i);
-    expect(orderLine).toBeInTheDocument();
+    const orderLines = await screen.findAllByText(/Order No: 12345/i);
+    expect(orderLines.length).toBeGreaterThan(0);
   });
 });

@@ -13,7 +13,7 @@ vi.mock('@/integrations/supabase/client', async () => {
     auth: {
       getSession: vi.fn(() => Promise.resolve({ data: { session: { user: { id: 'test-user' } } } })),
     },
-    from: vi.fn(() => ({ insert: vi.fn(() => ({ data: [{ id: 'order1' }], error: null })) })),
+    from: vi.fn(() => ({ insert: vi.fn(() => ({ select: vi.fn(() => Promise.resolve({ data: [{ id: 'order1' }], error: null })) })) })),
   } as any;
   return { supabase };
 });
